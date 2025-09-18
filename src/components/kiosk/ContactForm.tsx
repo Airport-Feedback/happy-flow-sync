@@ -20,6 +20,7 @@ export interface ContactFormData {
   rating: number;
   name?: string;
   email?: string;
+  phone?: string;
   profession?: string;
   comment?: string;
   timestamp: string;
@@ -45,6 +46,7 @@ const ContactForm = ({ rating, onSubmit, onSkip }: ContactFormProps) => {
       rating,
       name: formData.name?.trim(),
       email: formData.email?.trim(),
+      phone: formData.phone?.trim(),
       profession: formData.profession,
       comment: formData.comment?.trim(),
       timestamp: new Date().toISOString(),
@@ -104,6 +106,21 @@ const ContactForm = ({ rating, onSubmit, onSkip }: ContactFormProps) => {
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 className="kiosk-input"
                 maxLength={100}
+              />
+            </div>
+
+            {/* Phone */}
+            <div className="space-y-3">
+              <label className="text-lg font-semibold text-foreground">
+                Phone (Optional)
+              </label>
+              <Input
+                type="tel"
+                placeholder="(555) 123-4567"
+                value={formData.phone || ""}
+                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                className="kiosk-input"
+                maxLength={20}
               />
             </div>
           </div>

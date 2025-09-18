@@ -140,6 +140,7 @@ const sendToServer = async (feedback: StoredFeedback): Promise<boolean> => {
         rating: feedback.rating,
         name: feedback.name,
         email: feedback.email,
+        phone: feedback.phone,
         profession: feedback.profession,
         comment: feedback.comment,
         timestamp: feedback.timestamp,
