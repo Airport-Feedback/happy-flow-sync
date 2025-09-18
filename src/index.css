@@ -166,17 +166,19 @@
   }
   
   .kiosk-button-primary {
-    @apply touch-target-lg rounded-2xl bg-primary text-primary-foreground font-semibold text-xl;
-    @apply hover:bg-primary-hover active:scale-95 transition-all duration-200;
-    @apply shadow-lg hover:shadow-xl;
+    @apply rounded-2xl bg-primary text-primary-foreground font-semibold transition-all duration-200;
+    @apply hover:bg-primary-hover active:scale-95 shadow-lg hover:shadow-xl;
+    /* Touch-friendly on tablets */
+    @apply min-h-[120px] min-w-[120px] text-xl;
     /* Responsive sizing for laptop/desktop */
     @apply lg:min-h-[60px] lg:min-w-[200px] lg:px-8 lg:py-4 lg:text-lg;
   }
   
   .kiosk-button-secondary {
-    @apply touch-target-lg rounded-2xl bg-muted text-muted-foreground font-semibold text-xl;
-    @apply hover:bg-muted/80 active:scale-95 transition-all duration-200;
-    @apply shadow-md hover:shadow-lg;
+    @apply rounded-2xl bg-muted text-muted-foreground font-semibold transition-all duration-200;
+    @apply hover:bg-muted/80 active:scale-95 shadow-md hover:shadow-lg;
+    /* Touch-friendly on tablets */
+    @apply min-h-[120px] min-w-[120px] text-xl;
     /* Responsive sizing for laptop/desktop */
     @apply lg:min-h-[60px] lg:min-w-[200px] lg:px-8 lg:py-4 lg:text-lg;
   }

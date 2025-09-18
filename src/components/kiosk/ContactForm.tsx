@@ -78,89 +78,94 @@ const ContactForm = ({ rating, onSubmit, onSkip }: ContactFormProps) => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Name */}
-            <div className="space-y-3">
-              <label className="text-lg font-semibold text-foreground">
-                Name (Optional)
-              </label>
-              <Input
-                type="text"
-                placeholder="Your name"
-                value={formData.name || ""}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                className="kiosk-input"
-                maxLength={50}
-              />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Contact Info */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Name */}
+                <div className="space-y-3">
+                  <label className="text-lg font-semibold text-foreground">
+                    Name (Optional)
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="Your name"
+                    value={formData.name || ""}
+                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    className="kiosk-input"
+                    maxLength={50}
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="space-y-3">
+                  <label className="text-lg font-semibold text-foreground">
+                    Email (Optional)
+                  </label>
+                  <Input
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={formData.email || ""}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    className="kiosk-input"
+                    maxLength={100}
+                  />
+                </div>
+
+                {/* Phone */}
+                <div className="space-y-3">
+                  <label className="text-lg font-semibold text-foreground">
+                    Phone (Optional)
+                  </label>
+                  <Input
+                    type="tel"
+                    placeholder="(555) 123-4567"
+                    value={formData.phone || ""}
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                    className="kiosk-input"
+                    maxLength={20}
+                  />
+                </div>
+
+                {/* Profession */}
+                <div className="space-y-3">
+                  <label className="text-lg font-semibold text-foreground">
+                    Visit Reason (Optional)
+                  </label>
+                  <Select 
+                    value={formData.profession || ""} 
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, profession: value }))}
+                  >
+                    <SelectTrigger className="kiosk-input">
+                      <SelectValue placeholder="Select your visit reason" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card border-border">
+                      {professionOptions.map((option) => (
+                        <SelectItem key={option} value={option} className="text-lg py-3">
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </div>
 
-            {/* Email */}
+            {/* Right Column - Comments */}
             <div className="space-y-3">
               <label className="text-lg font-semibold text-foreground">
-                Email (Optional)
+                Additional Comments (Optional)
               </label>
-              <Input
-                type="email"
-                placeholder="your.email@example.com"
-                value={formData.email || ""}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="kiosk-input"
-                maxLength={100}
+              <Textarea
+                placeholder="Tell us more about your experience..."
+                value={formData.comment || ""}
+                onChange={(e) => setFormData(prev => ({ ...prev, comment: e.target.value }))}
+                className="kiosk-input min-h-[200px] lg:min-h-[280px] resize-none"
+                maxLength={200}
               />
-            </div>
-
-            {/* Phone */}
-            <div className="space-y-3">
-              <label className="text-lg font-semibold text-foreground">
-                Phone (Optional)
-              </label>
-              <Input
-                type="tel"
-                placeholder="(555) 123-4567"
-                value={formData.phone || ""}
-                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                className="kiosk-input"
-                maxLength={20}
-              />
-            </div>
-          </div>
-
-          {/* Profession */}
-          <div className="space-y-3">
-            <label className="text-lg font-semibold text-foreground">
-              Visit Reason (Optional)
-            </label>
-            <Select 
-              value={formData.profession || ""} 
-              onValueChange={(value) => setFormData(prev => ({ ...prev, profession: value }))}
-            >
-              <SelectTrigger className="kiosk-input">
-                <SelectValue placeholder="Select your visit reason" />
-              </SelectTrigger>
-              <SelectContent className="bg-card border-border">
-                {professionOptions.map((option) => (
-                  <SelectItem key={option} value={option} className="text-lg py-3">
-                    {option}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Comment */}
-          <div className="space-y-3">
-            <label className="text-lg font-semibold text-foreground">
-              Additional Comments (Optional)
-            </label>
-            <Textarea
-              placeholder="Tell us more about your experience..."
-              value={formData.comment || ""}
-              onChange={(e) => setFormData(prev => ({ ...prev, comment: e.target.value }))}
-              className="kiosk-input min-h-[120px] resize-none"
-              maxLength={200}
-            />
-            <div className="text-sm text-muted-foreground text-right">
-              {(formData.comment || "").length}/200 characters
+              <div className="text-sm text-muted-foreground text-right">
+                {(formData.comment || "").length}/200 characters
+              </div>
             </div>
           </div>
 
