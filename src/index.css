@@ -2,41 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Kiosk Feedback App Design System - Optimized for tablets and accessibility */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    /* Core brand colors - medical/service industry palette */
+    --background: 248 250 252; /* slate-50 equivalent */
+    --foreground: 203 32% 16%; /* deep blue-gray */
+    
+    --card: 255 255 255; /* pure white */
+    --card-foreground: 203 32% 16%;
+    
+    /* Primary - trustworthy medical blue */
+    --primary: 213 94% 48%; /* blue-500 equivalent */
+    --primary-foreground: 255 255 255;
+    --primary-hover: 213 94% 42%;
+    
+    /* Feedback emotion colors */
+    --emoji-very-sad: 0 84% 60%; /* red-500 */
+    --emoji-sad: 25 95% 53%; /* orange-500 */
+    --emoji-neutral: 45 93% 58%; /* yellow-500 */
+    --emoji-happy: 142 76% 36%; /* green-600 */
+    --emoji-very-happy: 142 86% 28%; /* green-700 */
+    
+    /* UI states */
+    --success: 142 76% 36%;
+    --success-foreground: 255 255 255;
+    --warning: 45 93% 58%;
+    --warning-foreground: 31 41% 17%;
+    --error: 0 84% 60%;
+    --error-foreground: 255 255 255;
+    
+    /* Neutral palette */
+    --muted: 210 40% 96%;
+    --muted-foreground: 203 21% 45%;
+    --border: 214 32% 91%;
+    --input: 255 255 255;
+    --input-border: 214 32% 87%;
+    --ring: 213 94% 48%;
+    
+    /* Kiosk-specific */
+    --kiosk-shadow: 0 10px 30px -5px hsl(203 32% 16% / 0.1);
+    --kiosk-shadow-lg: 0 20px 50px -10px hsl(203 32% 16% / 0.15);
+    --emoji-shadow: 0 8px 25px -5px hsl(var(--primary) / 0.3);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Spacing for touch targets */
+    --touch-target: 80px;
+    --touch-target-lg: 120px;
+    
+    --radius: 16px;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +118,62 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-hidden;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    touch-action: manipulation; /* Prevents zoom on touch */
+  }
+  
+  /* Kiosk-specific base styles */
+  .kiosk-container {
+    @apply min-h-screen flex flex-col bg-background;
+    user-select: none; /* Prevent text selection on kiosk */
+  }
+  
+  .touch-target {
+    min-height: var(--touch-target);
+    min-width: var(--touch-target);
+  }
+  
+  .touch-target-lg {
+    min-height: var(--touch-target-lg);
+    min-width: var(--touch-target-lg);
+  }
+}
+
+@layer components {
+  /* Emoji button variants */
+  .emoji-button {
+    @apply touch-target-lg rounded-3xl transition-all duration-300 hover:scale-105 active:scale-95;
+    box-shadow: var(--kiosk-shadow);
+  }
+  
+  .emoji-button:hover {
+    box-shadow: var(--emoji-shadow);
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  .emoji-very-sad { @apply bg-red-50 hover:bg-red-100 border-2 border-red-200; }
+  .emoji-sad { @apply bg-orange-50 hover:bg-orange-100 border-2 border-orange-200; }
+  .emoji-neutral { @apply bg-yellow-50 hover:bg-yellow-100 border-2 border-yellow-200; }
+  .emoji-happy { @apply bg-green-50 hover:bg-green-100 border-2 border-green-200; }
+  .emoji-very-happy { @apply bg-green-50 hover:bg-green-100 border-2 border-green-200; }
+  
+  /* Form elements optimized for touch */
+  .kiosk-input {
+    @apply touch-target rounded-xl border-2 border-input-border bg-input px-6 py-4 text-lg;
+    @apply focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none;
+    @apply transition-all duration-200;
+  }
+  
+  .kiosk-button-primary {
+    @apply touch-target-lg rounded-2xl bg-primary text-primary-foreground font-semibold text-xl;
+    @apply hover:bg-primary-hover active:scale-95 transition-all duration-200;
+    @apply shadow-lg hover:shadow-xl;
+  }
+  
+  .kiosk-button-secondary {
+    @apply touch-target-lg rounded-2xl bg-muted text-muted-foreground font-semibold text-xl;
+    @apply hover:bg-muted/80 active:scale-95 transition-all duration-200;
+    @apply shadow-md hover:shadow-lg;
   }
 }
