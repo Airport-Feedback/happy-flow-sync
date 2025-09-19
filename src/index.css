@@ -169,6 +169,17 @@
     transform: translateY(-2px) scale(1.05);
   }
   
+  /* Tablet-specific emoji sizing - keep them large and utilize space */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .emoji-button {
+      @apply rounded-3xl;
+      min-height: 140px;
+      min-width: 140px;
+      font-size: 3.5rem;
+      margin: 1rem;
+    }
+  }
+  
   /* Phone-specific emoji sizing and vertical layout */
   @media (max-width: 768px) {
     .emoji-button {
@@ -177,11 +188,6 @@
       min-width: 100%;
       font-size: 2rem;
       margin: 0.5rem 0;
-    }
-    
-    /* Force vertical layout on tablets and phones */
-    .grid-cols-5 {
-      @apply grid-cols-1 gap-4 max-w-sm;
     }
   }
   
@@ -192,11 +198,6 @@
       min-width: 100%;
       font-size: 1.75rem;
       margin: 0.25rem 0;
-    }
-    
-    /* Ensure single column on small phones */
-    .grid-cols-5 {
-      @apply grid-cols-1 gap-3 max-w-xs;
     }
   }
   

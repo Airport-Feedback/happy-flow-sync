@@ -38,7 +38,7 @@ const EmojiRating = ({ onRatingSelect }: EmojiRatingProps) => {
         </div>
 
         {/* Emoji Rating Grid */}
-        <div className="grid grid-cols-5 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-5 md:grid-cols-1 gap-8 md:gap-4 max-w-5xl md:max-w-sm mx-auto">
           {emojis.map((item) => (
             <button
               key={item.rating}
