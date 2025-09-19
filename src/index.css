@@ -169,17 +169,6 @@
     transform: translateY(-2px) scale(1.05);
   }
   
-  /* Tablet-specific emoji sizing - keep them large and utilize space */
-  @media (max-width: 1024px) and (min-width: 769px) {
-    .emoji-button {
-      @apply rounded-3xl;
-      min-height: 140px;
-      min-width: 140px;
-      font-size: 3.5rem;
-      margin: 1rem;
-    }
-  }
-  
   /* Phone-specific emoji sizing and vertical layout */
   @media (max-width: 768px) {
     .emoji-button {
@@ -229,17 +218,17 @@
   }
   
   /* Responsive button sizing */
-  @media (max-width: 1024px) {
-    .kiosk-button-primary,
-    .kiosk-button-secondary {
-      @apply min-h-[50px] min-w-[140px] px-6 py-3 text-base;
-    }
-  }
-  
   @media (max-width: 768px) {
     .kiosk-button-primary,
     .kiosk-button-secondary {
       @apply min-h-[44px] min-w-full px-4 py-3 text-sm;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .kiosk-button-primary,
+    .kiosk-button-secondary {
+      @apply min-h-[40px] min-w-full px-3 py-2 text-sm;
     }
   }
 }
