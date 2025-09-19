@@ -129,6 +129,23 @@
     user-select: none; /* Prevent text selection on kiosk */
   }
   
+  /* Responsive container adjustments */
+  @media (max-width: 1024px) {
+    .kiosk-container {
+      @apply overflow-y-auto;
+      min-height: 100vh;
+      max-height: 100vh;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .kiosk-container {
+      @apply overflow-y-auto px-4 py-6;
+      min-height: 100vh;
+      max-height: 100vh;
+    }
+  }
+  
   .touch-target {
     min-height: var(--touch-target);
     min-width: var(--touch-target);
@@ -170,8 +187,6 @@
     @apply hover:bg-primary-hover active:scale-95 shadow-lg hover:shadow-xl;
     /* Touch-friendly on tablets */
     @apply min-h-[120px] min-w-[120px] text-xl;
-    /* Responsive sizing for laptop/desktop */
-    @apply lg:min-h-[60px] lg:min-w-[200px] lg:px-8 lg:py-4 lg:text-lg;
   }
   
   .kiosk-button-secondary {
@@ -179,7 +194,20 @@
     @apply hover:bg-muted/80 active:scale-95 shadow-md hover:shadow-lg;
     /* Touch-friendly on tablets */
     @apply min-h-[120px] min-w-[120px] text-xl;
-    /* Responsive sizing for laptop/desktop */
-    @apply lg:min-h-[60px] lg:min-w-[200px] lg:px-8 lg:py-4 lg:text-lg;
+  }
+  
+  /* Responsive button sizing */
+  @media (max-width: 1024px) {
+    .kiosk-button-primary,
+    .kiosk-button-secondary {
+      @apply min-h-[50px] min-w-[140px] px-6 py-3 text-base;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .kiosk-button-primary,
+    .kiosk-button-secondary {
+      @apply min-h-[44px] min-w-full px-4 py-3 text-sm;
+    }
   }
 }

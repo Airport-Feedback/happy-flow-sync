@@ -64,20 +64,20 @@ const ContactForm = ({ rating, onSubmit, onSkip }: ContactFormProps) => {
   };
 
   return (
-    <div className="kiosk-container items-center justify-center px-8 py-12">
-      <div className="max-w-2xl mx-auto">
+    <div className="kiosk-container items-center justify-start px-4 py-6 lg:px-8 lg:py-12">
+      <div className="max-w-2xl mx-auto w-full">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <div className="text-center mb-6 lg:mb-12">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 lg:mb-4">
             Thanks for your feedback!
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-lg md:text-xl text-muted-foreground">
             Want us to follow up? Fill out the optional fields below
           </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Column - Contact Info */}
             <div className="lg:col-span-2 space-y-6">
@@ -170,7 +170,7 @@ const ContactForm = ({ rating, onSubmit, onSkip }: ContactFormProps) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col md:flex-row gap-6 pt-8">
+          <div className="flex flex-col md:flex-row gap-4 lg:gap-6 pt-4 lg:pt-8 sticky bottom-0 bg-background pb-4 lg:pb-0">
             <Button
               type="submit"
               disabled={isSubmitting}
