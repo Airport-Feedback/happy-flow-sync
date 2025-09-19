@@ -169,6 +169,27 @@
     transform: translateY(-2px) scale(1.05);
   }
   
+  /* Phone-specific emoji sizing */
+  @media (max-width: 768px) {
+    .emoji-button {
+      @apply rounded-2xl;
+      min-height: 70px;
+      min-width: 70px;
+      font-size: 2rem;
+      margin: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .emoji-button {
+      @apply rounded-xl;
+      min-height: 60px;
+      min-width: 60px;
+      font-size: 1.75rem;
+      margin: 0.25rem;
+    }
+  }
+  
   .emoji-very-sad { @apply bg-red-50 hover:bg-red-100 border-2 border-red-200; }
   .emoji-sad { @apply bg-orange-50 hover:bg-orange-100 border-2 border-orange-200; }
   .emoji-neutral { @apply bg-yellow-50 hover:bg-yellow-100 border-2 border-yellow-200; }
