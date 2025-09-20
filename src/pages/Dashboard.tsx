@@ -131,8 +131,8 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 overflow-auto">
+      <div className="max-w-7xl mx-auto space-y-6 pb-8">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -235,14 +235,14 @@ const Dashboard = () => {
                   <CardTitle>Rating Distribution</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ChartContainer
+                   <ChartContainer
                     config={{
                       count: {
                         label: "Responses",
                         color: "hsl(var(--chart-1))",
                       },
                     }}
-                    className="h-[300px]"
+                    className="h-[350px] w-full"
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={chartData}>
@@ -270,7 +270,7 @@ const Dashboard = () => {
                         color: "hsl(var(--chart-2))",
                       },
                     }}
-                    className="h-[300px]"
+                    className="h-[350px] w-full"
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={dailyChartData}>
