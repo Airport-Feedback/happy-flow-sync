@@ -3,6 +3,9 @@ import EmojiRating from "./EmojiRating";
 import ContactForm, { ContactFormData } from "./ContactForm";
 import ThankYou from "./ThankYou";
 import { saveFeedbackOffline, syncPendingFeedback } from "@/lib/offline-storage";
+import { Link } from "react-router-dom";
+import { BarChart3 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type KioskScreen = "rating" | "contact" | "thanks";
 
@@ -98,7 +101,17 @@ const KioskApp = () => {
   }, [inactivityTimer]);
 
   return (
-    <>
+    <div className="relative">
+      {/* Admin Dashboard Access */}
+      {currentScreen === "rating" && (
+        <Link to="/dashboard" className="absolute top-4 right-4 z-10">
+          <Button variant="ghost" size="sm" className="opacity-30 hover:opacity-100 transition-opacity">
+            <BarChart3 className="h-4 w-4 mr-2" />
+            Dashboard
+          </Button>
+        </Link>
+      )}
+      
       {currentScreen === "rating" && (
         <EmojiRating onRatingSelect={handleRatingSelect} />
       )}
@@ -114,7 +127,7 @@ const KioskApp = () => {
       {currentScreen === "thanks" && (
         <ThankYou onComplete={handleComplete} />
       )}
-    </>
+    </div>
   );
 };
 
