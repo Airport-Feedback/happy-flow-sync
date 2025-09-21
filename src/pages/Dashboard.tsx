@@ -131,8 +131,9 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4 overflow-auto">
-      <div className="max-w-7xl mx-auto space-y-6 pb-8">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5">
+      <div className="h-screen overflow-y-auto">
+        <div className="max-w-7xl mx-auto space-y-6 p-4 pb-8">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -435,6 +436,7 @@ const Dashboard = () => {
             </div>
           </TabsContent>
         </Tabs>
+        </div>
       </div>
     </div>
   );
