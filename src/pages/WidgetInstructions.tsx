@@ -34,7 +34,7 @@ const WidgetInstructions = () => {
 <script src="${currentUrl}/embed.js"></script>`;
 
   const iframeCode = `<iframe 
-  src="${currentUrl}/#/widget?position=${position}&color=${encodeURIComponent(color)}&company=${encodeURIComponent(companyName)}" 
+  src="${currentUrl}/widget?position=${position}&color=${encodeURIComponent(color)}&company=${encodeURIComponent(companyName)}" 
   style="position: fixed; ${position.includes('bottom') ? 'bottom: 0;' : 'top: 0;'} ${position.includes('right') ? 'right: 0;' : 'left: 0;'} width: 100%; height: 100%; border: none; z-index: 999999; pointer-events: none; background: transparent;" 
   onload="this.style.pointerEvents='auto'">
 </iframe>`;
@@ -140,7 +140,7 @@ export default FeedbackWidget;`;
               <h4 className="font-semibold mb-2">Live Preview:</h4>
               <div className="relative bg-gray-100 rounded-lg h-64 overflow-hidden">
                 <iframe 
-                  src={`${currentUrl}/#/widget?position=${position}&color=${encodeURIComponent(color)}&company=${encodeURIComponent(companyName)}`}
+                  src={`${currentUrl}/widget?position=${position}&color=${encodeURIComponent(color)}&company=${encodeURIComponent(companyName)}`}
                   className="w-full h-full border-none"
                   title="Widget Preview"
                 />
@@ -151,10 +151,11 @@ export default FeedbackWidget;`;
 
         {/* Integration Methods */}
         <Tabs defaultValue="script" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="script">Script Tag (Recommended)</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="script">Script Tag</TabsTrigger>
             <TabsTrigger value="iframe">iFrame</TabsTrigger>
             <TabsTrigger value="react">React Component</TabsTrigger>
+            <TabsTrigger value="snippets">Code Snippets</TabsTrigger>
           </TabsList>
 
           <TabsContent value="script" className="space-y-4">
@@ -287,6 +288,399 @@ function App() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="snippets" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Code className="w-5 h-5" />
+                  Platform-Specific Code Snippets
+                </CardTitle>
+                <CardDescription>
+                  Ready-to-use code snippets for different frontend platforms
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Static HTML Website */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-lg">Static HTML Website</h4>
+                  <p className="text-sm text-muted-foreground">Add this to your HTML file before the closing &lt;/body&gt; tag</p>
+                  <div className="relative">
+                    <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto">
+                      <code>{`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+</head>
+<body>
+    <!-- Your website content -->
+    
+    <!-- Feedback Widget Integration -->
+    ${embedScript}
+</body>
+</html>`}</code>
+                    </pre>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="absolute top-2 right-2"
+                      onClick={() => copyToClipboard(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+</head>
+<body>
+    <!-- Your website content -->
+    
+    <!-- Feedback Widget Integration -->
+    ${embedScript}
+</body>
+</html>`, 'html')}
+                    >
+                      {copied === 'html' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Vanilla JavaScript */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-lg">Vanilla JavaScript</h4>
+                  <p className="text-sm text-muted-foreground">Dynamically load the widget using JavaScript</p>
+                  <div className="relative">
+                    <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto">
+                      <code>{`// Initialize Feedback Widget
+function initFeedbackWidget() {
+  // Set configuration
+  window.FeedbackWidgetConfig = {
+    position: '${position}',
+    primaryColor: '${color}',
+    companyName: '${companyName}',
+    baseUrl: '${currentUrl}'
+  };
+
+  // Create and load script
+  const script = document.createElement('script');
+  script.src = '${currentUrl}/embed.js';
+  script.onload = function() {
+    console.log('Feedback widget loaded successfully');
+  };
+  script.onerror = function() {
+    console.error('Failed to load feedback widget');
+  };
+  
+  document.body.appendChild(script);
+}
+
+// Load widget when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initFeedbackWidget);
+} else {
+  initFeedbackWidget();
+}`}</code>
+                    </pre>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="absolute top-2 right-2"
+                      onClick={() => copyToClipboard(`// Initialize Feedback Widget
+function initFeedbackWidget() {
+  // Set configuration
+  window.FeedbackWidgetConfig = {
+    position: '${position}',
+    primaryColor: '${color}',
+    companyName: '${companyName}',
+    baseUrl: '${currentUrl}'
+  };
+
+  // Create and load script
+  const script = document.createElement('script');
+  script.src = '${currentUrl}/embed.js';
+  script.onload = function() {
+    console.log('Feedback widget loaded successfully');
+  };
+  script.onerror = function() {
+    console.error('Failed to load feedback widget');
+  };
+  
+  document.body.appendChild(script);
+}
+
+// Load widget when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initFeedbackWidget);
+} else {
+  initFeedbackWidget();
+}`, 'vanilla')}
+                    >
+                      {copied === 'vanilla' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* React/Next.js */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-lg">React / Next.js</h4>
+                  <p className="text-sm text-muted-foreground">React hook for feedback widget integration</p>
+                  <div className="relative">
+                    <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto max-h-80">
+                      <code>{`// hooks/useFeedbackWidget.js
+import { useEffect } from 'react';
+
+export const useFeedbackWidget = (config = {}) => {
+  useEffect(() => {
+    // Set global configuration
+    window.FeedbackWidgetConfig = {
+      position: '${position}',
+      primaryColor: '${color}',
+      companyName: '${companyName}',
+      baseUrl: '${currentUrl}',
+      ...config // Allow overriding default config
+    };
+
+    // Load script
+    const script = document.createElement('script');
+    script.src = '${currentUrl}/embed.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Cleanup function
+    return () => {
+      // Remove widget iframe if exists
+      const iframe = document.querySelector('iframe[src*="widget"]');
+      if (iframe) iframe.remove();
+      
+      // Remove script
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+      
+      // Clean up global config
+      delete window.FeedbackWidgetConfig;
+    };
+  }, [config]);
+};
+
+// Usage in your React component:
+// import { useFeedbackWidget } from './hooks/useFeedbackWidget';
+//
+// function App() {
+//   useFeedbackWidget();
+//   return <div>Your App Content</div>;
+// }`}</code>
+                    </pre>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="absolute top-2 right-2"
+                      onClick={() => copyToClipboard(`// hooks/useFeedbackWidget.js
+import { useEffect } from 'react';
+
+export const useFeedbackWidget = (config = {}) => {
+  useEffect(() => {
+    // Set global configuration
+    window.FeedbackWidgetConfig = {
+      position: '${position}',
+      primaryColor: '${color}',
+      companyName: '${companyName}',
+      baseUrl: '${currentUrl}',
+      ...config // Allow overriding default config
+    };
+
+    // Load script
+    const script = document.createElement('script');
+    script.src = '${currentUrl}/embed.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Cleanup function
+    return () => {
+      // Remove widget iframe if exists
+      const iframe = document.querySelector('iframe[src*="widget"]');
+      if (iframe) iframe.remove();
+      
+      // Remove script
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+      
+      // Clean up global config
+      delete window.FeedbackWidgetConfig;
+    };
+  }, [config]);
+};
+
+// Usage in your React component:
+// import { useFeedbackWidget } from './hooks/useFeedbackWidget';
+//
+// function App() {
+//   useFeedbackWidget();
+//   return <div>Your App Content</div>;
+// }`, 'react-hook')}
+                    >
+                      {copied === 'react-hook' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* TypeScript */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-lg">TypeScript</h4>
+                  <p className="text-sm text-muted-foreground">TypeScript implementation with proper typing</p>
+                  <div className="relative">
+                    <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto max-h-80">
+                      <code>{`// types/feedback-widget.d.ts
+declare global {
+  interface Window {
+    FeedbackWidgetConfig?: FeedbackWidgetConfig;
+  }
+}
+
+interface FeedbackWidgetConfig {
+  position: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+  primaryColor: string;
+  companyName: string;
+  baseUrl: string;
+}
+
+// utils/feedbackWidget.ts
+export class FeedbackWidget {
+  private script: HTMLScriptElement | null = null;
+  private config: FeedbackWidgetConfig;
+
+  constructor(config: Partial<FeedbackWidgetConfig> = {}) {
+    this.config = {
+      position: '${position}',
+      primaryColor: '${color}',
+      companyName: '${companyName}',
+      baseUrl: '${currentUrl}',
+      ...config
+    };
+  }
+
+  public initialize(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // Set global configuration
+      window.FeedbackWidgetConfig = this.config;
+
+      // Create script element
+      this.script = document.createElement('script');
+      this.script.src = \`\${this.config.baseUrl}/embed.js\`;
+      this.script.async = true;
+      
+      this.script.onload = () => resolve();
+      this.script.onerror = () => reject(new Error('Failed to load feedback widget'));
+      
+      document.body.appendChild(this.script);
+    });
+  }
+
+  public destroy(): void {
+    // Remove iframe
+    const iframe = document.querySelector('iframe[src*="widget"]');
+    if (iframe) iframe.remove();
+    
+    // Remove script
+    if (this.script?.parentNode) {
+      this.script.parentNode.removeChild(this.script);
+    }
+    
+    // Clean up global config
+    delete window.FeedbackWidgetConfig;
+    this.script = null;
+  }
+}
+
+// Usage:
+// const widget = new FeedbackWidget();
+// widget.initialize().catch(console.error);`}</code>
+                    </pre>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="absolute top-2 right-2"
+                      onClick={() => copyToClipboard(`// types/feedback-widget.d.ts
+declare global {
+  interface Window {
+    FeedbackWidgetConfig?: FeedbackWidgetConfig;
+  }
+}
+
+interface FeedbackWidgetConfig {
+  position: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+  primaryColor: string;
+  companyName: string;
+  baseUrl: string;
+}
+
+// utils/feedbackWidget.ts
+export class FeedbackWidget {
+  private script: HTMLScriptElement | null = null;
+  private config: FeedbackWidgetConfig;
+
+  constructor(config: Partial<FeedbackWidgetConfig> = {}) {
+    this.config = {
+      position: '${position}',
+      primaryColor: '${color}',
+      companyName: '${companyName}',
+      baseUrl: '${currentUrl}',
+      ...config
+    };
+  }
+
+  public initialize(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // Set global configuration
+      window.FeedbackWidgetConfig = this.config;
+
+      // Create script element
+      this.script = document.createElement('script');
+      this.script.src = \`\${this.config.baseUrl}/embed.js\`;
+      this.script.async = true;
+      
+      this.script.onload = () => resolve();
+      this.script.onerror = () => reject(new Error('Failed to load feedback widget'));
+      
+      document.body.appendChild(this.script);
+    });
+  }
+
+  public destroy(): void {
+    // Remove iframe
+    const iframe = document.querySelector('iframe[src*="widget"]');
+    if (iframe) iframe.remove();
+    
+    // Remove script
+    if (this.script?.parentNode) {
+      this.script.parentNode.removeChild(this.script);
+    }
+    
+    // Clean up global config
+    delete window.FeedbackWidgetConfig;
+    this.script = null;
+  }
+}
+
+// Usage:
+// const widget = new FeedbackWidget();
+// widget.initialize().catch(console.error);`, 'typescript')}
+                    >
+                      {copied === 'typescript' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
 
         {/* Configuration Options */}
@@ -363,10 +757,10 @@ function App() {
           </p>
           <div className="flex justify-center gap-4">
             <Button variant="outline" asChild>
-              <a href={`${currentUrl}/#/dashboard`}>View Dashboard</a>
+              <a href={`${currentUrl}/dashboard`}>View Dashboard</a>
             </Button>
             <Button asChild>
-              <a href={`${currentUrl}/#/widget?position=bottom-right&color=%23365fb8&company=Demo%20Company`}>Try Demo</a>
+              <a href={`${currentUrl}/widget?position=bottom-right&color=%23365fb8&company=Demo%20Company`}>Try Demo</a>
             </Button>
           </div>
         </div>
