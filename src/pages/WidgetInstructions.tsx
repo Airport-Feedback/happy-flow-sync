@@ -21,8 +21,8 @@ const WidgetInstructions = () => {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const currentUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/happy-flow-sync';
-  
+  const currentUrl = window.location.origin + '/happy-flow-sync';
+
   const embedScript = `<script>
   window.FeedbackWidgetConfig = {
     position: '${position}',
@@ -107,7 +107,7 @@ export default FeedbackWidget;`;
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="color">Primary Color</Label>
                 <div className="flex gap-2">
@@ -125,7 +125,7 @@ export default FeedbackWidget;`;
                   />
                 </div>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="company">Company Name</Label>
                 <Input
@@ -139,7 +139,7 @@ export default FeedbackWidget;`;
             <div className="pt-4">
               <h4 className="font-semibold mb-2">Live Preview:</h4>
               <div className="relative bg-gray-100 rounded-lg h-64 overflow-hidden">
-                <iframe 
+                <iframe
                   src={`${currentUrl}/widget?position=${position}&color=${encodeURIComponent(color)}&company=${encodeURIComponent(companyName)}`}
                   className="w-full h-full border-none"
                   title="Widget Preview"
@@ -233,7 +233,7 @@ export default FeedbackWidget;`;
                 <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <h4 className="font-semibold text-yellow-800">Note:</h4>
                   <p className="text-sm text-yellow-700 mt-1">
-                    The iframe approach gives you direct control but requires manual positioning. 
+                    The iframe approach gives you direct control but requires manual positioning.
                     The script tag method is recommended for most use cases.
                   </p>
                 </div>
@@ -702,7 +702,7 @@ export class FeedbackWidget {
                   <Badge variant="outline">top-left</Badge>
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 <h4 className="font-semibold">Customization</h4>
                 <ul className="text-sm space-y-1">
@@ -732,7 +732,7 @@ export class FeedbackWidget {
                   <li>• Source information (embedded widget)</li>
                 </ul>
               </div>
-              
+
               <div>
                 <h4 className="font-semibold mb-2">Privacy Features:</h4>
                 <ul className="text-sm space-y-1 text-muted-foreground">
