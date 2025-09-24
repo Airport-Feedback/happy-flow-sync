@@ -9,188 +9,45 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 
 //
-// Extracted IntegrationTabs component
+// Code snippets data
 //
-function IntegrationTabs({
-  htmlSnippet,
-  javascriptSnippet,
-  reactSnippet,
-  typescriptSnippet,
-  iframeCode,
-  copyToClipboard,
-  copied,
-}: {
-  htmlSnippet: string;
-  javascriptSnippet: string;
-  reactSnippet: string;
-  typescriptSnippet: string;
-  iframeCode: string;
-  copyToClipboard: (text: string, type: string) => void;
-  copied: string | null;
-}) {
-  const [tab, setTab] = useState("html");
-
-  return (
-    <Tabs value={tab} onValueChange={setTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-5">
-        <TabsTrigger value="html">HTML</TabsTrigger>
-        <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        <TabsTrigger value="react">React</TabsTrigger>
-        <TabsTrigger value="typescript">TypeScript</TabsTrigger>
-        <TabsTrigger value="iframe">iFrame</TabsTrigger>
-      </TabsList>
-
-      {/* HTML */}
-      <TabsContent value="html" className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Static HTML Website</CardTitle>
-            <CardDescription>For traditional HTML websites</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label>Complete HTML example with widget integration:</Label>
-              <div className="relative">
-                <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto max-h-80">
-                  <code>{htmlSnippet}</code>
-                </pre>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="absolute top-2 right-2"
-                  onClick={() => copyToClipboard(htmlSnippet, "html")}
-                >
-                  {copied === "html" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      {/* JavaScript */}
-      <TabsContent value="javascript" className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Vanilla JavaScript</CardTitle>
-            <CardDescription>Dynamic loading with pure JavaScript</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label>JavaScript function to dynamically load the widget:</Label>
-              <div className="relative">
-                <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto max-h-80">
-                  <code>{javascriptSnippet}</code>
-                </pre>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="absolute top-2 right-2"
-                  onClick={() => copyToClipboard(javascriptSnippet, "javascript")}
-                >
-                  {copied === "javascript" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      {/* React */}
-      <TabsContent value="react" className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>React / Next.js</CardTitle>
-            <CardDescription>React hook and component implementation</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label>React hook and component for widget integration:</Label>
-              <div className="relative">
-                <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto max-h-80">
-                  <code>{reactSnippet}</code>
-                </pre>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="absolute top-2 right-2"
-                  onClick={() => copyToClipboard(reactSnippet, "react")}
-                >
-                  {copied === "react" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      {/* TypeScript */}
-      <TabsContent value="typescript" className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>TypeScript</CardTitle>
-            <CardDescription>TypeScript implementation with type safety</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label>TypeScript types and implementation:</Label>
-              <div className="relative">
-                <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto max-h-80">
-                  <code>{typescriptSnippet}</code>
-                </pre>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="absolute top-2 right-2"
-                  onClick={() => copyToClipboard(typescriptSnippet, "typescript")}
-                >
-                  {copied === "typescript" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      {/* iFrame */}
-      <TabsContent value="iframe" className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>iFrame Integration</CardTitle>
-            <CardDescription>Direct iframe embed for maximum control</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>iFrame embed code:</Label>
-                <div className="relative">
-                  <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto">
-                    <code>{iframeCode}</code>
-                  </pre>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="absolute top-2 right-2"
-                    onClick={() => copyToClipboard(iframeCode, "iframe")}
-                  >
-                    {copied === "iframe" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  </Button>
-                </div>
-              </div>
-              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <h4 className="font-semibold text-yellow-800">Note:</h4>
-                <p className="text-sm text-yellow-700 mt-1">
-                  The iframe approach gives you direct control but requires manual positioning.
-                  The script tag method is recommended for most use cases.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </TabsContent>
-    </Tabs>
-  );
-}
+const getCodeSnippets = (htmlSnippet: string, javascriptSnippet: string, reactSnippet: string, typescriptSnippet: string, iframeCode: string) => [
+  {
+    id: "html",
+    title: "Static HTML Website",
+    description: "For traditional HTML websites",
+    code: htmlSnippet,
+    language: "html",
+  },
+  {
+    id: "javascript",
+    title: "Vanilla JavaScript",
+    description: "Dynamic loading with pure JavaScript",
+    code: javascriptSnippet,
+    language: "javascript",
+  },
+  {
+    id: "react",
+    title: "React / Next.js",
+    description: "React hook and component implementation",
+    code: reactSnippet,
+    language: "javascript",
+  },
+  {
+    id: "typescript",
+    title: "TypeScript",
+    description: "TypeScript implementation with type safety",
+    code: typescriptSnippet,
+    language: "typescript",
+  },
+  {
+    id: "iframe",
+    title: "iFrame Integration",
+    description: "Direct iframe embed for maximum control",
+    code: iframeCode,
+    language: "html",
+  },
+];
 
 //
 // Main WidgetInstructions component
@@ -338,9 +195,12 @@ export function useFeedbackWidget({
   }, [position, color, companyName]);
 }`;
 
+  const codeSnippets = getCodeSnippets(htmlSnippet, javascriptSnippet, reactSnippet, typescriptSnippet, iframeCode);
+
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="min-h-screen bg-background">
+      <div className="h-screen overflow-auto">
+        <div className="max-w-4xl mx-auto p-6 space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold">Feedback Widget Integration</h1>
@@ -416,18 +276,54 @@ export function useFeedbackWidget({
               </CardContent>
             </Card>
 
-            {/* Platform-Specific Integration */}
-            <IntegrationTabs
-              htmlSnippet={htmlSnippet}
-              javascriptSnippet={javascriptSnippet}
-              reactSnippet={reactSnippet}
-              typescriptSnippet={typescriptSnippet}
-              iframeCode={iframeCode}
-              copyToClipboard={copyToClipboard}
-              copied={copied}
-            />
+            {/* Platform-Specific Integration Snippets */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Platform-Specific Integration</h3>
+              {codeSnippets.map((snippet) => (
+                <Card key={snippet.id}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      {snippet.title}
+                      <Badge variant="outline">{snippet.language}</Badge>
+                    </CardTitle>
+                    <CardDescription>{snippet.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="relative">
+                        <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto max-h-80">
+                          <code>{snippet.code}</code>
+                        </pre>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="absolute top-2 right-2"
+                          onClick={() => copyToClipboard(snippet.code, snippet.id)}
+                        >
+                          {copied === snippet.id ? (
+                            <Check className="w-4 h-4" />
+                          ) : (
+                            <Copy className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
+                      {snippet.id === "iframe" && (
+                        <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <h4 className="font-semibold text-yellow-800">Note:</h4>
+                          <p className="text-sm text-yellow-700 mt-1">
+                            The iframe approach gives you direct control but requires manual positioning.
+                            The script tag method is recommended for most use cases.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </TabsContent>
         </Tabs>
+        </div>
       </div>
     </div>
   );
