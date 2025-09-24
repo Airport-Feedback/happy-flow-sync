@@ -14,7 +14,7 @@ const WidgetInstructions = () => {
   const [position, setPosition] = useState("bottom-right");
   const [color, setColor] = useState("#365fb8");
   const [companyName, setCompanyName] = useState("Your Company");
-
+  const [integrationTab, setIntegrationTab] = useState("typescript");
   const copyToClipboard = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
     setCopied(type);
@@ -34,8 +34,8 @@ const WidgetInstructions = () => {
 <script src="${currentUrl}/embed.js"></script>`;
 
   const iframeCode = `<iframe 
-  src="${currentUrl}/widget?position=${position}&color=${encodeURIComponent(color)}&company=${encodeURIComponent(companyName)}" 
-  style="position: fixed; ${position.includes('bottom') ? 'bottom: 0;' : 'top: 0;'} ${position.includes('right') ? 'right: 0;' : 'left: 0;'} width: 100%; height: 100%; border: none; z-index: 999999; pointer-events: none; background: transparent;" 
+  src="${currentUrl}/widget-export?position=${position}&color=${encodeURIComponent(color)}&company=${encodeURIComponent(companyName)}" 
+  style="position: fixed; ${position.includes('bottom') ? 'bottom: 16px;' : 'top: 16px;'} ${position.includes('right') ? 'right: 16px;' : 'left: 16px;'} width: 100%; height: 100%; border: none; z-index: 999999; pointer-events: none; background: transparent;" 
   onload="this.style.pointerEvents='auto'">
 </iframe>`;
 
@@ -107,7 +107,7 @@ export const useFeedbackWidget = (config = {}) => {
     // Cleanup function
     return () => {
       // Remove widget iframe if exists
-      const iframe = document.querySelector('iframe[src*="widget"]');
+      const iframe = document.querySelector('iframe[src*="widget-export"]');
       if (iframe) iframe.remove();
       
       // Remove script
@@ -200,7 +200,7 @@ export const useFeedbackWidget = (config: FeedbackWidgetConfig = {}) => {
       script.removeEventListener('load', handleLoad);
       script.removeEventListener('error', handleError);
       
-      const iframe = document.querySelector('iframe[src*="widget"]') as HTMLIFrameElement;
+      const iframe = document.querySelector('iframe[src*="widget-export"]') as HTMLIFrameElement;
       if (iframe) iframe.remove();
       
       if (script.parentNode) {
@@ -351,7 +351,7 @@ export default FeedbackWidget;`;
             </Card>
 
             {/* Platform-Specific Integration */}
-            <Tabs defaultValue="html" className="w-full">
+            <Tabs defaultValue={integrationTab} onValueChange={(v) => { console.log("inner tab changed:", v); setIntegrationTab(v); console.log("Integration tab changed:", integrationTab); }} className="w-full">
               <TabsList className="grid w-full grid-cols-5">
                 <TabsTrigger value="html">HTML</TabsTrigger>
                 <TabsTrigger value="javascript">JavaScript</TabsTrigger>
