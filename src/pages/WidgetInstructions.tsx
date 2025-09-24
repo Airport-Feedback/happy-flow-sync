@@ -121,11 +121,21 @@ const WidgetInstructions = () => {
   document.head.appendChild(script);
 })();`;
 
-  const reactSnippet = `// hooks/useFeedbackWidget.js
-import { useEffect } from 'react';
+  const reactSnippets = [
+    {
+      step: 1,
+      title: "Create the Feedback Widget Hook",
+      description: "First, create a custom hook to manage the widget lifecycle. This hook will handle loading the script and cleaning up when the component unmounts.",
+      filename: "hooks/useFeedbackWidget.js",
+      code: `import { useEffect } from 'react';
 
-export function useFeedbackWidget({ position = '${position}', color = '${color}', companyName = '${companyName}' }) {
+export function useFeedbackWidget({ 
+  position = '${position}', 
+  color = '${color}', 
+  companyName = '${companyName}' 
+}) {
   useEffect(() => {
+    // Configure the widget before loading the script
     window.FeedbackWidgetConfig = {
       position,
       primaryColor: color,
@@ -133,24 +143,100 @@ export function useFeedbackWidget({ position = '${position}', color = '${color}'
       baseUrl: '${currentUrl}'
     };
 
+    // Create and load the widget script
     const script = document.createElement('script');
     script.src = '${currentUrl}/embed.js';
     script.async = true;
     document.body.appendChild(script);
 
+    // Cleanup function to remove script when component unmounts
     return () => {
       script.remove();
     };
   }, [position, color, companyName]);
+}`
+    },
+    {
+      step: 2,
+      title: "Use the Hook in Your App Component",
+      description: "Import and use the hook in your main App component or any component where you want the feedback widget to appear.",
+      filename: "App.js",
+      code: `import { useFeedbackWidget } from './hooks/useFeedbackWidget';
+
+function App() {
+  // Initialize the feedback widget with default settings
+  useFeedbackWidget({});
+  
+  // Or customize the widget settings
+  // useFeedbackWidget({
+  //   position: 'bottom-left',
+  //   color: '#ff6b6b',
+  //   companyName: 'My Awesome Company'
+  // });
+
+  return (
+    <div className="App">
+      <header>
+        <h1>Welcome to My App</h1>
+      </header>
+      <main>
+        {/* Your app content here */}
+        <p>The feedback widget will appear automatically!</p>
+      </main>
+    </div>
+  );
 }
 
-// usage in component
-function MyApp() {
-  useFeedbackWidget({});
-  return <div>My App</div>;
-}`;
+export default App;`
+    },
+    {
+      step: 3,
+      title: "Advanced Usage with State Management",
+      description: "For more advanced scenarios, you can manage widget settings through your app's state management system.",
+      filename: "components/FeedbackProvider.js",
+      code: `import { createContext, useContext, useState } from 'react';
+import { useFeedbackWidget } from '../hooks/useFeedbackWidget';
 
-  const typescriptSnippet = `// types/feedback-widget.d.ts
+const FeedbackContext = createContext();
+
+export function FeedbackProvider({ children }) {
+  const [widgetConfig, setWidgetConfig] = useState({
+    position: '${position}',
+    color: '${color}',
+    companyName: '${companyName}'
+  });
+
+  // Initialize widget with current config
+  useFeedbackWidget(widgetConfig);
+
+  const updateWidgetConfig = (newConfig) => {
+    setWidgetConfig(prev => ({ ...prev, ...newConfig }));
+  };
+
+  return (
+    <FeedbackContext.Provider value={{ widgetConfig, updateWidgetConfig }}>
+      {children}
+    </FeedbackContext.Provider>
+  );
+}
+
+export const useFeedbackConfig = () => {
+  const context = useContext(FeedbackContext);
+  if (!context) {
+    throw new Error('useFeedbackConfig must be used within FeedbackProvider');
+  }
+  return context;
+};`
+    }
+  ];
+
+  const typescriptSnippets = [
+    {
+      step: 1,
+      title: "Create Type Definitions",
+      description: "First, create proper TypeScript interfaces for type safety. This ensures your widget configuration is properly typed.",
+      filename: "types/feedback-widget.d.ts",
+      code: `// Global type declarations for the feedback widget
 declare global {
   interface Window {
     FeedbackWidgetConfig?: {
@@ -162,21 +248,31 @@ declare global {
   }
 }
 
-// hooks/useFeedbackWidget.ts
-import { useEffect } from 'react';
-
-interface WidgetOptions {
-  position?: string;
+// Widget configuration interface
+export interface WidgetOptions {
+  position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
   color?: string;
   companyName?: string;
 }
+
+// Export empty object to make this a module
+export {};`
+    },
+    {
+      step: 2,
+      title: "Create Typed Hook",
+      description: "Create a strongly typed hook that ensures type safety for all widget configurations and provides better IDE support.",
+      filename: "hooks/useFeedbackWidget.ts",
+      code: `import { useEffect } from 'react';
+import type { WidgetOptions } from '../types/feedback-widget';
 
 export function useFeedbackWidget({ 
   position = '${position}', 
   color = '${color}', 
   companyName = '${companyName}' 
-}: WidgetOptions) {
+}: WidgetOptions = {}) {
   useEffect(() => {
+    // Type-safe configuration
     window.FeedbackWidgetConfig = {
       position,
       primaryColor: color,
@@ -184,18 +280,158 @@ export function useFeedbackWidget({
       baseUrl: '${currentUrl}'
     };
 
+    // Create and load the widget script
     const script = document.createElement('script');
     script.src = '${currentUrl}/embed.js';
     script.async = true;
+    script.onerror = () => {
+      console.error('Failed to load feedback widget script');
+    };
+    
     document.body.appendChild(script);
 
-    return () => {
-      script.remove();
+    // Cleanup function with proper typing
+    return (): void => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
     };
   }, [position, color, companyName]);
-}`;
+}`
+    },
+    {
+      step: 3,
+      title: "Use in TypeScript Component",
+      description: "Implement the hook in your main TypeScript component with full type safety and error handling.",
+      filename: "App.tsx",
+      code: `import React from 'react';
+import { useFeedbackWidget } from './hooks/useFeedbackWidget';
+import type { WidgetOptions } from './types/feedback-widget';
 
-  const codeSnippets = getCodeSnippets(htmlSnippet, javascriptSnippet, reactSnippet, typescriptSnippet, iframeCode);
+const App: React.FC = () => {
+  // Basic usage with default settings
+  useFeedbackWidget();
+  
+  // Or with custom configuration
+  // const widgetConfig: WidgetOptions = {
+  //   position: 'bottom-left',
+  //   color: '#2563eb',
+  //   companyName: 'My TypeScript App'
+  // };
+  // useFeedbackWidget(widgetConfig);
+
+  return (
+    <div className="app">
+      <header>
+        <h1>My TypeScript Application</h1>
+      </header>
+      <main>
+        <p>
+          Feedback widget will load automatically with full type safety!
+        </p>
+      </main>
+    </div>
+  );
+};
+
+export default App;`
+    },
+    {
+      step: 4,
+      title: "Advanced Context Provider (Optional)",
+      description: "For complex applications, create a context provider with full TypeScript support for managing widget state across components.",
+      filename: "providers/FeedbackProvider.tsx",
+      code: `import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { useFeedbackWidget } from '../hooks/useFeedbackWidget';
+import type { WidgetOptions } from '../types/feedback-widget';
+
+interface FeedbackContextType {
+  widgetConfig: Required<WidgetOptions>;
+  updateWidgetConfig: (config: Partial<WidgetOptions>) => void;
+  isWidgetEnabled: boolean;
+  toggleWidget: () => void;
+}
+
+const FeedbackContext = createContext<FeedbackContextType | undefined>(undefined);
+
+interface FeedbackProviderProps {
+  children: ReactNode;
+  defaultConfig?: WidgetOptions;
+}
+
+export const FeedbackProvider: React.FC<FeedbackProviderProps> = ({ 
+  children, 
+  defaultConfig = {} 
+}) => {
+  const [widgetConfig, setWidgetConfig] = useState<Required<WidgetOptions>>({
+    position: '${position}',
+    color: '${color}',
+    companyName: '${companyName}',
+    ...defaultConfig
+  });
+  
+  const [isWidgetEnabled, setIsWidgetEnabled] = useState(true);
+
+  // Only initialize widget if enabled
+  useFeedbackWidget(isWidgetEnabled ? widgetConfig : undefined);
+
+  const updateWidgetConfig = (newConfig: Partial<WidgetOptions>): void => {
+    setWidgetConfig(prev => ({ ...prev, ...newConfig }));
+  };
+
+  const toggleWidget = (): void => {
+    setIsWidgetEnabled(prev => !prev);
+  };
+
+  const contextValue: FeedbackContextType = {
+    widgetConfig,
+    updateWidgetConfig,
+    isWidgetEnabled,
+    toggleWidget
+  };
+
+  return (
+    <FeedbackContext.Provider value={contextValue}>
+      {children}
+    </FeedbackContext.Provider>
+  );
+};
+
+export const useFeedbackConfig = (): FeedbackContextType => {
+  const context = useContext(FeedbackContext);
+  if (context === undefined) {
+    throw new Error('useFeedbackConfig must be used within FeedbackProvider');
+  }
+  return context;
+};`
+    }
+  ];
+
+  const getCodeSnippets = (htmlSnippet: string, javascriptSnippet: string, iframeCode: string) => [
+    {
+      id: "html",
+      title: "Static HTML Website",
+      description: "For traditional HTML websites",
+      code: htmlSnippet,
+      language: "html",
+    },
+    {
+      id: "javascript",
+      title: "Vanilla JavaScript",
+      description: "Dynamic loading with pure JavaScript",
+      code: javascriptSnippet,
+      language: "javascript",
+    },
+    {
+      id: "iframe",
+      title: "iFrame Integration",
+      description: "Direct iframe embed for maximum control",
+      code: iframeCode,
+      language: "html",
+    },
+  ];
+
+  const codeSnippets = getCodeSnippets(htmlSnippet, javascriptSnippet, iframeCode);
 
   return (
     <div className="min-h-screen bg-background">
@@ -278,7 +514,7 @@ export function useFeedbackWidget({
 
             {/* Platform-Specific Integration Snippets */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Platform-Specific Integration</h3>
+              <h3 className="text-lg font-semibold">Simple Integration</h3>
               {codeSnippets.map((snippet) => (
                 <Card key={snippet.id}>
                   <CardHeader>
@@ -316,6 +552,100 @@ export function useFeedbackWidget({
                           </p>
                         </div>
                       )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* React Integration Steps */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">React / Next.js Integration (Step-by-Step)</h3>
+              <p className="text-muted-foreground text-sm">
+                Follow these steps to integrate the feedback widget into your React or Next.js application with proper hooks and state management.
+              </p>
+              {reactSnippets.map((snippet) => (
+                <Card key={snippet.step}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Badge variant="secondary">Step {snippet.step}</Badge>
+                        {snippet.title}
+                      </div>
+                      <Badge variant="outline">javascript</Badge>
+                    </CardTitle>
+                    <CardDescription>{snippet.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Code className="w-4 h-4" />
+                        <span className="font-mono">{snippet.filename}</span>
+                      </div>
+                      <div className="relative">
+                        <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto max-h-96">
+                          <code>{snippet.code}</code>
+                        </pre>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="absolute top-2 right-2"
+                          onClick={() => copyToClipboard(snippet.code, `react-step-${snippet.step}`)}
+                        >
+                          {copied === `react-step-${snippet.step}` ? (
+                            <Check className="w-4 h-4" />
+                          ) : (
+                            <Copy className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* TypeScript Integration Steps */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">TypeScript Integration (Step-by-Step)</h3>
+              <p className="text-muted-foreground text-sm">
+                Implement the feedback widget in TypeScript with full type safety, proper interfaces, and advanced error handling.
+              </p>
+              {typescriptSnippets.map((snippet) => (
+                <Card key={snippet.step}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Badge variant="secondary">Step {snippet.step}</Badge>
+                        {snippet.title}
+                      </div>
+                      <Badge variant="outline">typescript</Badge>
+                    </CardTitle>
+                    <CardDescription>{snippet.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Code className="w-4 h-4" />
+                        <span className="font-mono">{snippet.filename}</span>
+                      </div>
+                      <div className="relative">
+                        <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto max-h-96">
+                          <code>{snippet.code}</code>
+                        </pre>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="absolute top-2 right-2"
+                          onClick={() => copyToClipboard(snippet.code, `typescript-step-${snippet.step}`)}
+                        >
+                          {copied === `typescript-step-${snippet.step}` ? (
+                            <Check className="w-4 h-4" />
+                          ) : (
+                            <Copy className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
